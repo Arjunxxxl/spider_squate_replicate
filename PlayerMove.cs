@@ -14,11 +14,14 @@ public class PlayerMove : MonoBehaviour {
 	bool draw = false;
 	bool isDead = false;
 
+	bool moveDxn = true;
+
 	float back_len;
 
 	GameObject line_end;
 
 	public GameObject gameover;
+
 
 	#region Singleton
 	public static PlayerMove Instance;
@@ -38,30 +41,8 @@ public class PlayerMove : MonoBehaviour {
 		if(!isDead){
 		if(Input.GetKey(KeyCode.Space))
 		{
-			len = 10 - transform.position.y;
-
-			/*if(isBack)
-			{
-				isBack = false;
-				back_len = len/2;
-			}*/
-
-			Vector3 current_pos1 = transform.position;
-			//if(len > back_len){
-			Vector3 final_pos1 = new Vector3(transform.position.x-len, transform.position.y+up_velocity, transform.position.z);
-			transform.position = Vector3.Lerp(current_pos1, final_pos1, Time.deltaTime * smooth);
-			/*}else{
-				Vector3 final_pos1 = new Vector3(transform.position.x+len, transform.position.y+up_velocity, transform.position.z);
-				transform.position = Vector3.Lerp(current_pos1, final_pos1, Time.deltaTime * smooth);
-			}*/
-			transform.Rotate(0,0, -Time.deltaTime * len *8f, Space.World);
-
-			if(draw){
-			line_end = new GameObject();
-			line_end.transform.position = new Vector3(transform.position.x-3.0f,10,0);
-			draw = false;
-			}
 			
+			move2();
 		}
 		else{
 		applyGravity();
@@ -108,6 +89,78 @@ public class PlayerMove : MonoBehaviour {
 			gameover.SetActive(true);
 		}
 	}
+
+	void move()
+	{
+			len = 10 - transform.position.y;
+
+			/*if(isBack)
+			{
+				isBack = false;
+				back_len = len/2;
+			}*/
+
+			Vector3 current_pos1 = transform.position;
+			//if(len > back_len){
+			Vector3 final_pos1 = new Vector3(transform.position.x-len, transform.position.y+up_velocity, transform.position.z);
+			transform.position = Vector3.Lerp(current_pos1, final_pos1, Time.deltaTime * smooth);
+			/*}else{
+				Vector3 final_pos1 = new Vector3(transform.position.x+len, transform.position.y+up_velocity, transform.position.z);
+				transform.position = Vector3.Lerp(current_pos1, final_pos1, Time.deltaTime * smooth);
+			}*/
+			transform.Rotate(0,0, -Time.deltaTime * len *8f, Space.World);
+
+			if(draw){
+			line_end = new GameObject();
+			line_end.transform.position = new Vector3(transform.position.x-3.0f,10,0);
+			draw = false;
+			}
+	}
+
+float fw;
+	void move2()
+	{
+			len = 10 - transform.position.y;
+
+			float t = len/(len*0.5f);
+			float s = 2/Mathf.Sqrt(5);
+			float c = 1/Mathf.Sqrt(5);
+			
+			fw =0f;
+			
+
+			if(draw){
+			line_end = new GameObject();
+			line_end.transform.position = new Vector3(transform.position.x-len*0.5f,10,0);
+			//fw = transform.position.x - (len * ((1 + c) / 2));
+			fw = line_end.transform.position.x - 0.1f;
+			draw = false;
+			}
+			
+			if(fw == transform.position.x){
+				moveDxn =false;
+				Debug.Log(moveDxn);
+			}
+			else if(fw < transform.position.x)
+			{
+				moveDxn = true;
+				Debug.Log(moveDxn);
+			}
+
+			if(moveDxn){
+			Vector3 current_pos1 = transform.position;
+			Vector3 final_pos1 = new Vector3(transform.position.x-len, transform.position.y+up_velocity, transform.position.z);
+			transform.position = Vector3.Lerp(current_pos1, final_pos1, Time.deltaTime * smooth);
+			transform.Rotate(0,0, -Time.deltaTime * len *8f, Space.World);
+			}else{
+			Vector3 current_pos1 = transform.position;
+			Vector3 final_pos1 = new Vector3(transform.position.x+len*150f, (transform.position.y+up_velocity/20), transform.position.z);
+			transform.position = Vector3.Lerp(current_pos1, final_pos1, Time.deltaTime * smooth);
+			transform.Rotate(0,0, -Time.deltaTime * len *8f, Space.World);
+			}
+
+	}
+
 
 
 }
