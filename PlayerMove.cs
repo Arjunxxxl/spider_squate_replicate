@@ -132,8 +132,8 @@ float fw;
 			if(draw){
 			line_end = new GameObject();
 			line_end.transform.position = new Vector3(transform.position.x-len*0.5f,10,0);
-			//fw = transform.position.x - (len * ((1 + c) / 2));
-			fw = line_end.transform.position.x - 0.1f;
+			fw = transform.position.x - (len * ((1 + c) / 2));
+			//fw = line_end.transform.position.x - 0.1f;
 			draw = false;
 			}
 			
